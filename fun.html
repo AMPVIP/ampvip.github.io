@@ -128,7 +128,7 @@
         <div id="swipeArea">
             
             <canvas width="160" height="320" id="game"></canvas>
-            <a id="Vscore" onclick="alert(d+' '+ip+' score '+score)" style="display: none"></a>
+            <a id="Vscore" onclick="alert(d+' ip '+ip+' score '+score)" style="display: none"></a>
         </div>
         <footer>
             <p><span class="copyleft">&copy;</span>1997г. Все права защимлены.</p>
@@ -136,7 +136,8 @@
     </div>
     <script>
         // get time
-        var d = new Date().toString();
+        var d = new Date().toLocaleDateString();
+        
       // get ip
         var ip
         document.addEventListener("DOMContentLoaded", function() {
@@ -549,7 +550,3 @@
     </script>
 </body>
 </html>
-
-
-
-
