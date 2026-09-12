@@ -217,20 +217,26 @@
     <center><span>Copyleft. Everyone can copy and do everything. </span></center>
   </div>
 </footer>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>
-    function slowScroll(id) {
-      $('html, body').animate({
-        scrollTop: $(id).offset().top
-      }, 500);
-    }
-
-    $(document).on("scroll", function () {
-      if($(window).scrollTop() === 0)
-        $("header").removeClass("fixed");
-      else
-        $("header").attr("class", "fixed");
+  // Плавная прокрутка
+  function slowScroll(id) {
+    const target = document.querySelector(id);
+    if (!target) return;
+    window.scrollTo({
+      top: target.offsetTop,
+      behavior: 'smooth'
     });
+  }
+
+  // Фиксированная шапка при скролле
+  const header = document.querySelector('header');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY === 0) {
+      header.classList.remove('fixed');
+    } else {
+      header.classList.add('fixed');
+    }
+  });
     function myFunction(elem) {
       var link = document.createElement("a");
       link.href = elem.id + '.pdf';
