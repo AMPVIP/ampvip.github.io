@@ -11,20 +11,40 @@
         margin: 0;
         padding: 0;
     }
-    
+
     header {
         background: #007BFF;
         color: #fff;
         padding: 10px 0;
         text-align: center;
     }
-    
+
     nav {
         background: #bcbcbc
     }
     .mirror {
             display:inline-block;
             transform: rotate(180deg);
+    }
+    /* Добавим немного стиля для таблиц и блоков кода, чтобы было читабельнее */
+    table {
+        border-collapse: collapse;
+        width: 100%;
+        margin: 10px 0;
+    }
+    th, td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+    }
+    th {
+        background-color: #f2f2f2;
+    }
+    pre {
+        background-color: #f4f4f4;
+        padding: 10px;
+        border-radius: 5px;
+        overflow-x: auto;
     }
     </style>
 </head>
@@ -44,6 +64,7 @@
             <li><a href="#knocking">Port Knocking</a></li>
             <li><a href="#wifi">Wifi</a></li>
             <li><a href="#pSQL">PostgreSQL</a></li>
+            <li><a href="#nanocad">Установка nanoCAD</a></li>
         </ul>
     </nav>
     <main>
@@ -125,11 +146,11 @@
                 <li><strong>sudo nft list ruleset</strong> — Просмотр действующих правил.</li>
                 <li><strong>sudo nft add rule [family] [table] [chain] [expression] [action]</strong>
                      — Добавление правила.</li>
-                <li><strong>sudo nft add rule inet filter input iifname lo counter accept</strong> 
+                <li><strong>sudo nft add rule inet filter input iifname lo counter accept</strong>
                     — чтобы сервисы внутри нормально работали разрешить подключения к loopback.</li>
-                <li><strong>sudo nft add chain inet filter input '{ policy drop; }'</strong> 
+                <li><strong>sudo nft add chain inet filter input '{ policy drop; }'</strong>
                     — После того как мы добавили все разрешающие правила в цепочке input, поменяем её политику на drop.</li>
-                <li><strong>sudo nft add rule inet filter input ct state established,related counter accept</strong> 
+                <li><strong>sudo nft add rule inet filter input ct state established,related counter accept</strong>
                     — разрешить все ответные пакеты механизм connection tracking.</li>
                 <li><strong>sudo nft delete rule inet filter input handle 8</strong> — удалить правило по его номеру.</li>
 
@@ -141,24 +162,24 @@
                 <li><strong>apt install knockd</strong> — установим.</li>
                 <li><strong>/etc/default/knockd</strong> — START_KNOCKD=1.</li>
                 <li><strong>/etc/knockd.conf</strong> — конфигурации.</li>
-                <li><strong>nft 'add rule ip filter INPUT iifname "eth0" ct state 
+                <li><strong>nft 'add rule ip filter INPUT iifname "eth0" ct state
                     related,established counter accept'</strong> — включить.</li>
             </ul>
         </section>
         <section id="wifi">
             <h2>Wifi</h2>
             <ul>
-                <li><strong><a href="https://mcsindex.com/" target="_blank">https://mcsindex.com/</a></strong> 
+                <li><strong><a href="https://mcsindex.com/" target="_blank">https://mcsindex.com/</a></strong>
                     — Modulation and Coding Scheme</li>
-                <li><strong><a href="https://github.com/skhomm/useful-wireless-links" target="_blank">https://github.com/skhomm/useful-wireless-links</a></strong> 
+                <li><strong><a href="https://github.com/skhomm/useful-wireless-links" target="_blank">https://github.com/skhomm/useful-wireless-links</a></strong>
                     — github wifi lib</li>
-                <li><strong><a href="https://habr.com/ru/articles/479878/" target="_blank">https://habr.com/ru/articles/479878/</a></strong> 
+                <li><strong><a href="https://habr.com/ru/articles/479878/" target="_blank">https://habr.com/ru/articles/479878/</a></strong>
                     — habr</li>
-                <li><strong><a href="https://support.oscium.com/hc/en-us/articles/115013527388-Wireshark-Configuration-Profile" target="_blank">https://support.oscium.com/hc/en-us/articles/115013527388-Wireshark-Configuration-Profile</a></strong> 
+                <li><strong><a href="https://support.oscium.com/hc/en-us/articles/115013527388-Wireshark-Configuration-Profile" target="_blank">https://support.oscium.com/hc/en-us/articles/115013527388-Wireshark-Configuration-Profile</a></strong>
                     — Wireshark profile</li>
-                <li><strong><a href="https://help.mikrotik.com/docs/spaces/ROS/pages/224559120/WiFi" target="_blank">https://help.mikrotik.com/docs/spaces/ROS/pages/224559120/WiFi</a></strong> 
+                <li><strong><a href="https://help.mikrotik.com/docs/spaces/ROS/pages/224559120/WiFi" target="_blank">https://help.mikrotik.com/docs/spaces/ROS/pages/224559120/WiFi</a></strong>
                     — mikrotik</li>
-                <li><strong><a href="https://wlanprofessionals.com/wi-fi-checklists/" target="_blank">https://wlanprofessionals.com/wi-fi-checklists/</a></strong> 
+                <li><strong><a href="https://wlanprofessionals.com/wi-fi-checklists/" target="_blank">https://wlanprofessionals.com/wi-fi-checklists/</a></strong>
                     — wi-fi-checklists</li>
             </ul>
         </section>
@@ -174,7 +195,7 @@
                 <li><strong>=> SHOW work_mem;</strong> — объём обработки запросов.<br>
                     <strong>=> SELECT name, setting, unit FROM pg_settings WHERE name = 'work_mem';<br>
                             => \dconfig work_mem</strong></li>
-                <li><strong>=> ALTER SYSTEM SET work_mem TO '64MB';</strong> — если мы собираемся выполнить запрос, 
+                <li><strong>=> ALTER SYSTEM SET work_mem TO '64MB';</strong> — если мы собираемся выполнить запрос,
                     сортирующий большой объем данных, то для сеанса можно увеличить значение.</li>
                 <li><strong>=> SELECT pg_reload_conf();</strong> — Чтобы изменение вступило в силу.<br>
                     <strong>sudo pg_ctlcluster 16 main reload</strong></li>
@@ -184,7 +205,7 @@
                 <li><strong>=> SELECT name, setting, unit FROM pg_settings LIMIT 7;</strong>
                      — Формат с выравниванием используется по умолчанию.</li>
 
-                <li>С помощью запроса SQL можно сформировать несколько других запросов SQL и записать их в файл, 
+                <li>С помощью запроса SQL можно сформировать несколько других запросов SQL и записать их в файл,
                     используя команду \o<br>
                     <strong>=> \a \t \pset fieldsep ''</strong> — меняем формат.<br>
                     <strong>=> \o dev1_tools.sql</strong> — указываем файл.<br>
@@ -196,30 +217,136 @@
                 <li><strong>=> \set TEST Hi!</strong> — Установим переменную.</li>
                 <li><strong>=> \echo :TEST</strong> — вызов переменной.</li>
                 <li><strong>=> \unset TEST</strong> — сбросить значение.</li>
-                <li><strong>=> \set top5 'SELECT tablename, pg_total_relation_size(schemaname||''.''||tablename) 
-                    AS bytes FROM pg_tables ORDER BY bytes DESC LIMIT 5;'</strong> 
+                <li><strong>=> \set top5 'SELECT tablename, pg_total_relation_size(schemaname||''.''||tablename)
+                    AS bytes FROM pg_tables ORDER BY bytes DESC LIMIT 5;'</strong>
                     — запись в переменную запроса на получение списка пяти самых больших таблиц.<br>
                     <strong>=> :top5</strong> — выполнить запрос.</li>
                 <li>Без параметров \set выдает значения всех переменных, включая встроенные.</li>
                 <li><strong>\? variables</strong> — Справка по встроенным переменным.</li>
-                <li><strong>shared_buffers</strong> — параметр, который устанавливает, сколько выделенной памяти будет 
-                    использоваться для кэширования данных. Обычно под shared_buffers отдают львиную часть всей памяти — 
-                    от 25 до 50%. Если сравнивать с MS SQL Server, то это близкий аналог buffer pool, размер которого 
+                <li><strong>shared_buffers</strong> — параметр, который устанавливает, сколько выделенной памяти будет
+                    использоваться для кэширования данных. Обычно под shared_buffers отдают львиную часть всей памяти —
+                    от 25 до 50%. Если сравнивать с MS SQL Server, то это близкий аналог buffer pool, размер которого
                     ограничивается параметром max server memory. Обычно рекомендуют устанавливать 30% от общего объема.</li>
-                <li><strong>temp_buffers</strong> — параметр, который задает максимальный объем памяти, выделяемый для 
-                    временных таблиц (буферов) в каждом сеансе. т. е. временные таблицы, в отличии от MS SQL, могут 
-                    кэшироваться в памяти, что позволяет избегать чтения с диска при работе с ними. При этом каждая таблица 
+                <li><strong>temp_buffers</strong> — параметр, который задает максимальный объем памяти, выделяемый для
+                    временных таблиц (буферов) в каждом сеансе. т. е. временные таблицы, в отличии от MS SQL, могут
+                    кэшироваться в памяти, что позволяет избегать чтения с диска при работе с ними. При этом каждая таблица
                     всегда имеет копию на диске, не важно хватило ли ей памяти в temp_buffers или нет.</li>
-                <li><strong>maintenance_work_mem</strong> — параметр, который устанавливает объём оперативной памяти, 
-                    выделенный для выполнения операций обслуживания базы данных: VACUUM, CREATE INDEX и ALTER TABLE, ADD 
+                <li><strong>maintenance_work_mem</strong> — параметр, который устанавливает объём оперативной памяти,
+                    выделенный для выполнения операций обслуживания базы данных: VACUUM, CREATE INDEX и ALTER TABLE, ADD
                     FOREIGN KEY. Для расчета нужно понимать количество одновременных потоков (задач) обслуживания.</li>
-                <li><strong>autovacuum_work_mem</strong> — параметр, который задает максимальный объём памяти, который будет 
-                    использовать каждый рабочий процесс автоочистки. Входит в тот же кусок пирога, что и maintenance_work_mem 
+                <li><strong>autovacuum_work_mem</strong> — параметр, который задает максимальный объём памяти, который будет
+                    использовать каждый рабочий процесс автоочистки. Входит в тот же кусок пирога, что и maintenance_work_mem
                     и по умолчанию равен «-1», т.е. объём определяется значением maintenance_work_mem.</li>
-                <li><strong>work_mem</strong> — параметр, который задаёт базовый максимальный объём памяти, который будет 
-                    использоваться в рамках одного рабочего процесса (сессии) во внутренних операциях типа соединений, 
-                    сортировки, группировки и т. п. при обработке запросов, прежде чем будут задействованы временные файлы 
+                <li><strong>work_mem</strong> — параметр, который задаёт базовый максимальный объём памяти, который будет
+                    использоваться в рамках одного рабочего процесса (сессии) во внутренних операциях типа соединений,
+                    сортировки, группировки и т. п. при обработке запросов, прежде чем будут задействованы временные файлы
                     на диске.</li>
+            </ul>
+        </section>
+        <section id="nanocad">
+            <h2>Установка nanoCAD 26.0 в Ubuntu 24.04 (с внешним PostgreSQL)</h2>
+
+            <h3>1. Предварительные условия</h3>
+            <ul>
+                <li>Ubuntu 24.04 (или совместимая версия)</li>
+                <li>Установленный PostgreSQL (в данном примере версия 18, порт <strong>5434</strong>, так как 5432 занят Docker)</li>
+                <li>Пакеты nanoCAD 26.0 для Ubuntu 24.04 (скачанные с <code>repo.nanodev.ru</code>)</li>
+            </ul>
+
+            <h3>2. Установка основного пакета nanoCAD</h3>
+            <p>Перейдите в каталог с пакетами и установите основной пакет:</p>
+            <pre><code>cd ~/Загрузки/nano
+sudo apt install ./ncad26-0_26.0.7233.4927.8434-6+1771432269Ubuntu24.04_amd64.deb</code></pre>
+            <blockquote>
+                <p><strong>Примечание</strong>: При установке появится сообщение о невозможности настроить базу данных — это нормально, так как мы будем использовать внешний PostgreSQL.</p>
+            </blockquote>
+
+            <h3>3. Настройка внешнего PostgreSQL</h3>
+            <h4>3.1 Создание роли и базы данных</h4>
+            <p>Войдите в PostgreSQL как суперпользователь:</p>
+            <pre><code>sudo -u postgres psql -p 5434</code></pre>
+            <p>Выполните SQL-команды (если роль уже существует, пропустите):</p>
+            <pre><code>CREATE ROLE mclogin WITH LOGIN SUPERUSER PASSWORD 'mclogin';
+CREATE DATABASE ncad_26_0 OWNER mclogin;
+\q</code></pre>
+            <blockquote>
+                <p><strong>Важно</strong>: Порт должен соответствовать порту вашего PostgreSQL (в данном примере 5434).</p>
+            </blockquote>
+
+            <h4>3.2 Настройка строки подключения для nanoCAD</h4>
+            <p>Создайте файл конфигурации <code>/etc/default/ncad-db16</code>:</p>
+            <pre><code>sudo rm -f /etc/default/ncad-db16
+echo "NCADPGDB=postgresql://mclogin:mclogin@127.0.0.1:5434" | sudo tee /etc/default/ncad-db16</code></pre>
+            <blockquote>
+                <p><strong>Ключевой момент</strong>: <strong>Не указывайте имя базы данных</strong> в URL. Скрипт автоматически создаст или использует базу <code>ncad_26_0</code> (и её предыдущую версию <code>ncad_26_0_prev</code>).</p>
+            </blockquote>
+
+            <h4>3.3 Запуск скрипта инициализации базы данных</h4>
+            <pre><code>ncad-db-install26-0</code></pre>
+            <p>Успешный вывод должен содержать:</p>
+            <pre><code>Установка баз данных для nanoCAD завершена</code></pre>
+
+            <h3>4. Установка дополнительных модулей (опционально)</h3>
+            <p>Для установки модулей «Механика» и «СПДС»:</p>
+            <pre><code>sudo apt install ./ncad-mech26-0_*.deb ./ncad-spds26-0_*.deb ./ncad-ssbadmin26-0_*.deb</code></pre>
+            <blockquote>
+                <p><strong>Примечание</strong>: Эти пакеты могут выдать предупреждение о зависимостях от <code>ncad-pgsql16</code>, но это не влияет на их установку.</p>
+            </blockquote>
+
+            <h3>5. Первый запуск и лицензирование</h3>
+            <p>Запустите nanoCAD:</p>
+            <pre><code>ncad26-0</code></pre>
+            <p>При первом запуске появится <strong>Мастер регистрации</strong>. Вам потребуется:</p>
+            <ul>
+                <li><strong>Серийный номер</strong> из личного кабинета на <a href="https://lk.nanocad.ru" target="_blank">lk.nanocad.ru</a></li>
+                <li>Выбрать <strong>офлайн-активацию</strong> (если нет интернета), сгенерировать файл запроса и отправить его в службу лицензирования.</li>
+            </ul>
+
+            <h3>6. Блокировка сети для nanoCAD (опционально, для принудительной офлайн-активации)</h3>
+            <p>Если программа настаивает на онлайн-проверке, можно использовать <code>firejail</code> для запуска без сети:</p>
+            <pre><code>firejail --net=none ncad26-0</code></pre>
+            <p>Или создайте отдельного пользователя и заблокируйте его трафик через <code>iptables</code>:</p>
+            <pre><code>sudo iptables -A OUTPUT -m owner --uid-owner nanocaduser -j DROP</code></pre>
+
+            <h3>7. Решение возможных проблем</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Проблема</th>
+                        <th>Решение</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>password authentication failed for user "mclogin"</code></td>
+                        <td>Убедитесь, что пароль <code>mclogin</code> сброшен: <code>ALTER ROLE mclogin WITH PASSWORD 'mclogin';</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>database "ncad_26_0/postgres" does not exist</code></td>
+                        <td>Уберите имя базы данных из URL в <code>/etc/default/ncad-db16</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>role "andrey" does not exist</code></td>
+                        <td>Создайте роль с именем вашего системного пользователя: <code>CREATE ROLE andrey WITH LOGIN SUPERUSER;</code> (временное решение)</td>
+                    </tr>
+                    <tr>
+                        <td>Порт 5432 занят</td>
+                        <td>Проверьте: <code>sudo ss -tulpn | grep 5432</code>; измените порт PostgreSQL или остановите контейнер Docker</td>
+                    </tr>
+                    <tr>
+                        <td>Ошибки зависимостей при установке <code>ncad-pgsql16</code></td>
+                        <td>Этот пакет <strong>не обязателен</strong> при использовании внешнего PostgreSQL — пропустите его</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>8. Проверка работоспособности</h3>
+            <p>После успешного запуска проверьте подключение к базе данных в меню nanoCAD:</p>
+            <ul>
+                <li><strong>Настройки → Доступ к базам данных → Источник данных</strong></li>
+                <li>Сервер: <code>127.0.0.1:5434</code></li>
+                <li>База данных: <code>ncad_26_0</code></li>
+                <li>Пользователь: <code>mclogin</code>, пароль: <code>mclogin</code></li>
             </ul>
         </section>
     </main>
